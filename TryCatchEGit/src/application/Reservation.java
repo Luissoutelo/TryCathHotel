@@ -1,8 +1,10 @@
-package enties;
+package application;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import model.exceptions.DomainException;
 
 public class Reservation {
 	DateTimeFormatter fm = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -14,12 +16,14 @@ public class Reservation {
 
 	}
 
-	public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) {
-
+	public Reservation(Integer roomNumber, LocalDate checkIn, LocalDate checkOut) throws DomainException {
+		if (checkOut.isBefore(checkIn)) {
+			throw new DomainException("Check-out date must be after check-in date!");
+			}else {
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-
+			}
 	}
 
 	public Integer getRoomNumber() {
@@ -44,19 +48,20 @@ public class Reservation {
 		return d.toDays();
 	}
 
-	public String atualizarReserva(LocalDate checkIn, LocalDate checkOut) {
+	public void atualizarReserva(LocalDate checkIn, LocalDate checkOut) throws DomainException{
 
 		LocalDate now = LocalDate.now();
-		if (checkIn.isBefore(now) || checkOut.isBefore(now)) {
+		if (checkIn.isBefore(now) || checkOut.isBefore(now) ) {
 
-			return "Reservation dates for update must be future dates";
+			throw new DomainException("Reservation dates for update must be future dates!"); 
+		// esta exepcao e que os argumentos sao invalidos
 		}
 		if (checkOut.isBefore(checkIn)) {
-			return "Check-out date must be after check-in date";
+		throw new DomainException("Check-out date must be after check-in date!");
 		}
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null;
+	
 
 	}
 
