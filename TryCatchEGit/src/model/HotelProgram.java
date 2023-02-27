@@ -34,16 +34,13 @@ public class HotelProgram {
 		data = LocalDate.parse(sc.nextLine(), fm);
 		System.out.print("Data checkout (dd/MM/yyyy):");
 		dataSaida = LocalDate.parse(sc.nextLine(), fm);
-		LocalDate now= LocalDate.now();	
-	if(now.isAfter(data) || dataSaida.isBefore(now)) {
-		
-			System.out.println("Error in reservation:Check-out date must be after check-in date!");
-	}else if (data.isAfter(dataSaida)){
-	System.out.println("Error in reservation:Check-out date and check-in date must be future dates!");
-	}else {
-		reserv.atualizarReserva(data, dataSaida);
+
+		String error= reserv.atualizarReserva(data, dataSaida);
+		if(error!=null) {
+			System.out.println("Error in reservation : "+ error);
+		}else {
 		System.out.println(reserv.toString());
-	}
+		}
 	}
 	
 	sc.close();
